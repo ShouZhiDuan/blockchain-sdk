@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nvxclouds.blockchain.biz.mapper.BlockChainInfoMapper">
+
+    <!--查询最大的区块高度-->
+    <select id="getMaxBlockNumber" resultType="long">
+              SELECT MAX(block_number) FROM block_chain_info
+    </select>
+
+    <!--增量更新区块列表数据-->
+    <insert id="insertBlockList"  parameterType="java.util.List">
+        insert into block_chain_info
+        ( block_number, transaction_count, data_hash, previous_hash_id, channel_id)
+        values
+        <foreach collection="records" item="record" index="index" separator=",">
+            (
+                #{record.blockNumber},
+                #{record.transactionCount},
+                #{record.dataHash},
+                #{record.previousHashID},
+                #{record.channelId}
+            )
+        </foreach>
+        on duplicate key update
+        block_number = values(block_number)
+    </insert>
+</mapper>

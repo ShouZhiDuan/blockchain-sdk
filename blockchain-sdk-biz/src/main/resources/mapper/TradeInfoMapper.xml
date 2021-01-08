@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nvxclouds.blockchain.biz.mapper.TradeInfoMapper">
+
+
+    <!--增量更新交易列表数据-->
+    <insert id="insertTradeList"  parameterType="java.util.List">
+        insert into trade_info
+        ( Status, OrganizationName, blockHeight, NodeName, TxTime, Operation, MessageHash, DataNodeID, DatasetID, TransactionID)
+        values
+        <foreach collection="records" item="record" index="index" separator=",">
+            (
+                #{record.Status},
+                #{record.OrganizationName},
+                #{record.blockHeight},
+                #{record.NodeName},
+                #{record.TxTime},
+                #{record.Operation},
+                #{record.MessageHash},
+                #{record.DataNodeID},
+                #{record.DatasetID},
+                #{record.TransactionID}
+            )
+        </foreach>
+        on duplicate key update
+        TransactionID = values(TransactionID)
+    </insert>
+</mapper>

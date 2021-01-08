@@ -1,0 +1,11 @@
+POST http://192.168.10.10:10810/dataProvider/dataNode/modification
+Content-Type: application/json
+
+{
+  "dataNodeID": "123456",
+  "nodeName": "13995600740",
+  "datasetID": "123456",
+  "status": "13995600740",
+  "txTime": "123456",
+  "messageHash": "13995600740"
+}

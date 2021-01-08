@@ -1,0 +1,19 @@
+#服务配置
+server:
+  port: 10810
+spring:
+  application:
+    name: blockchain-sdk
+  profiles:
+    active: dev
+  mvc:
+    async:
+      request-timeout: 60000
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    #打印sql 语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+

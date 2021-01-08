@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 172.31.10.158:8848
+#        server-addr: 52.80.81.232:8848
+        ext-config:
+          - data-id: blockchain_discovery.yaml
+          - data-id: blockchain_mysql.yaml
+          - data-id: application-sentinel.yaml
+          - data-id: application_redis.yaml
+          - data-id: ms_control_kafka.yaml
+

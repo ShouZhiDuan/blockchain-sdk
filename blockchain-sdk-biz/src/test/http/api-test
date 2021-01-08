@@ -1,0 +1,27 @@
+###
+GET http://127.0.0.1:10811/ms/dataSet/approval?dataNodeID=dataNode1002
+
+###
+GET http://192.168.10.10:10810/ms/dataSet/approval?dataNodeID=dataNode1002
+
+###
+GET http://192.168.10.10:10810/dataProvider/dataNode/modification?perPage=100
+
+###
+GET http://192.168.10.10:10810/dataProvider/dataSet/increase?perPage=100
+
+###
+GET http://192.168.10.10:10810/dataProvider/dataSet/modification?perPage=100
+
+###
+POST http://192.168.10.10:10810/dataProvider/dataSet/modification
+Content-Type: application/json
+
+{
+  "dataNodeID": "123456",
+  "nodeName": "13995600740",
+  "datasetID": "123456",
+  "status": "13995600740",
+  "txTime": "123456",
+  "messageHash": "13995600740"
+}

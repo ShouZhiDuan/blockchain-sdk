@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nvxclouds.blockchain.biz.mapper.InvokeInfoMapper">
+
+    <select id="getBlockchainTransactionApprovalByPage"
+            resultType="com.nvxclouds.blockchain.biz.domain.InvokeInfo">
+        select *
+        from invoke_info
+        where operation in ('newDatasetApproval', 'researchProjectApproval', 'useDatasetApproval')
+        order by create_time desc;
+    </select>
+
+
+    <!--按照前1小时统计每5分钟的交易数据-->
+    <select id="querTradeCountGroupBy5Mins" resultType="long">
+                SELECT
+                    COUNT(ti.id) as countNum
+                FROM
+                    invoke_info ti
+                WHERE
+                    ti.create_time BETWEEN DATE_SUB(#{timeStr},INTERVAL 5 MINUTE) AND #{timeStr}
+    </select>
+
+    <!--按照前12天统计每天交易折线图数据-->
+    <select id="querTradeCountGroup1Hour" resultType="long">
+                SELECT
+                    COUNT(ti.id) as countNum
+                FROM
+                    invoke_info ti
+                WHERE
+                    ti.create_time BETWEEN DATE_SUB(#{timeStr},INTERVAL 1 HOUR ) AND #{timeStr}
+    </select>
+
+
+    <!--交易数量(1、数据提供方2、应用提供方3、数据使用方4、监管方5、APP用户)-->
+    <select id="querTradeCountByType" resultType="com.nvxclouds.blockchain.api.vo.OrganizationTradeCountVO">
+              SELECT
+                     COUNT(*) tradeCount,
+                     <if test="flag!=null and flag==1">
+                     '数据提供方' AS organizationName
+                     </if>
+                     <if test="flag!=null and flag==2">
+                     '应用提供方' AS organizationName
+                     </if>
+                     <if test="flag!=null and flag==3">
+                     '数据使用方' AS organizationName
+                     </if>
+                     <if test="flag!=null and flag==4">
+                     '监管方' AS organizationName
+                     </if>
+                     <if test="flag!=null and flag==5">
+                     'APP用户' AS organizationName
+                     </if>
+              FROM invoke_info ii WHERE 1=1
+              <if test="flag!=null and flag==1">
+                  AND ii.operation IN ('dataNodeRegistration','dataNodeModificationApply','addDatasetApply','openDatasets','modifyDatasets','datasetsOffline','queryNodeDataResearchResults')
+              </if>
+              <if test="flag!=null and flag==2">
+                  AND ii.operation IN ('addAppApply','appOnline','modifyAppApply','queryAppUsage','appOffline')
+              </if>
+              <if test="flag!=null and flag==3">
+                  AND ii.operation IN ('createResearchProjects','useDatasetApply','queryUserResearchResults','purchaseAuthorization','activateAuthorization')
+              </if>
+              <if test="flag!=null and flag==4">
+                  AND ii.operation IN ('newDatasetApproval','modifyDatasetApproval','researchProjectApproval','useDatasetApproval','newAppApproval','modifyAppApproval','queryProjectResearchResults')
+              </if>
+              <if test="flag!=null and flag==5">
+                  AND ii.operation IN ('authorizationDataUpBlockChain','authorizationAndParticipationInResearch','queryDataUsage','queryAppUserDataResearchResults')
+              </if>
+    </select>
+
+
+
+
+
+</mapper>
